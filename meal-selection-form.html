@@ -1,0 +1,357 @@
+<!-- meal-selection-form.html -->
+<div class="meal-selection-form">
+    <form id="mealForm" action="" method="post">
+        <label for="customerName">Customer Name:</label>
+        <input type="text" name="customerName" required>
+
+        <label for="customerEmail">Email:</label>
+        <input type="email" name="customerEmail" required>
+
+        <label for="customerPhone">Phone Number:</label>
+        <input type="tel" name="customerPhone" required>
+
+        <label for="shippingAddress">Shipping Address:</label>
+        <textarea name="shippingAddress" required></textarea>
+
+        <div id="mealRows">
+            <!-- Meal selection rows will be dynamically added here -->
+        </div>
+
+        <button type="button" onclick="addMealRow()">Add Meal Day</button>
+
+
+        <div id="orderSummary">
+            <h4>Order Summary</h4>
+            <p>Total Price: <span id="totalPrice">0.00</span></p>
+            <p>Tax (9%): <span id="taxAmount">0.00</span></p>
+            <p>Grand Total: <span id="grandTotal">0.00</span></p>
+        </div>
+        <button type="submit">Submit Order</button>
+    </form>
+
+    <script>
+        // Add your JavaScript logic here
+
+        function addMealRow() {
+            var mealRows = document.getElementById("mealRows");
+
+            var mealRow = document.createElement("div");
+            mealRow.className = "meal-row";
+
+            mealRow.innerHTML = `
+                <label for="mealSelection">Select Meals (Max 2 per day):</label>
+                <div class="meal-selection">
+                    <!-- Meals will be populated dynamically -->
+                    <select name="selectedMeals[]" onchange="calculateOrderSummary()">
+                             <option value="" selected disabled>Choose a meal</option>
+                <option value="Yam and Egg" data-price="13.00">Yam and Egg ($13.00)</option>
+                <option value="Cow Feet (Leg)" data-price="5.00">Cow Feet (Leg) ($5.00)</option>
+                <option value="Fry Instant Indomie Noodles with Suya" data-price="18.00">Fry Instant Indomie Noodles with Suya. ($18.00)</option>
+                <option value="Plantain and Egg" data-price="10.00">Plantain and Egg ($10.00)</option>
+                <option value="Guinea Corn Meal(Ogi Baba)" data-price="10.00">Guinea Corn Meal(Ogi Baba) ($10.00)</option>
+                <option value="Pap White (Ogi)" data-price="10.00">Pap White (Ogi) ($10.00)</option>
+                <option value="Custard + Moi Moi or Akara" data-price="10.00">Custard + Moi Moi or Akara ($10.00)</option>
+                <option value="Pap Yellow (Ogi)" data-price="10.00">Pap Yellow (Ogi) ($10.00)</option>
+                <option value="SS Grill Chicken Sandwich" data-price="13.00">SS Grill Chicken Sandwich ($13.00)</option>
+                <option value="Oatmeal Meal with Akara or Moimoi" data-price="10.00">Oatmeal Meal with Akara or Moimoi ($10.00)</option>
+                <option value="Oatmeal Nut with Bread plus boiled Egg" data-price="14.00">Oatmeal Nut with Bread plus boiled Egg ($14.00)</option>
+                <option value="SS Sandwich Avocado Plus Egg" data-price="13.00">SS Sandwich Avocado Plus Egg ($13.00)</option>
+                <option value="India Nan Bread" data-price="10.00">India Nan Bread ($10.00)</option>
+                <option value="Avocado Salad" data-price="13.00">Avocado Salad ($13.00)</option>
+                <option value="SS Vegetable Salad Meal" data-price="13.00">SS Vegetable Salad Meal ($13.00)</option>
+                <option value="SS Chicken Salad Meal" data-price="13.00">SS Chicken Salad Meal ($13.00)</option>
+                <option value="Oat Meal Chicken Salad" data-price="13.00">Oat Meal Chicken Salad ($13.00)</option>
+                <option value="Egusi Soup" data-price="13.00">Egusi Soup ($13.00)</option>
+                <option value="Rich Jollof Rice" data-price="14.00">Rich Jollof Rice ($14.00)</option>
+                <option value="Suya and Jollof Rice" data-price="18.00">Suya and Jollof Rice ($18.00)</option>
+                <option value="Efo Riro (Vegetable)" data-price="13.00">Efo Riro (Vegetable) ($13.00)</option>
+                <option value="Seafood Okro" data-price="15.00">Seafood Okro ($15.00)</option>
+                <option value="Pepper Soup" data-price="20.00">Pepper Soup ($20.00)</option>
+                <option value="Edika Ikong Soup" data-price="15.00">Edika Ikong Soup ($15.00)</option>
+                <option value="Amala Marietta (Gbegri, Ewedu with Meat)" data-price="15.00">Amala Marietta (Gbegri, Ewedu with Meat) ($15.00)</option>
+                <option value="Ayamasi Stew with Rice" data-price="13.00">Ayamasi Stew with Rice ($13.00)</option>
+                <option value="Turkey Wings-Midi" data-price="5.00">Turkey Wings-Midi ($5.00)</option>
+                <option value="Instant Indomie Noodles with Fry Egg or Boil Egg" data-price="14.00">Instant Indomie Noodles with Fry Egg or Boil Egg ($14.00)</option>
+                <option value="Poundo Yam" data-price="3.00">Poundo Yam ($3.00)</option>
+                <option value="Croaker Fish" data-price="10.00">Croaker Fish ($10.00)</option>
+                <option value="Grilled Fresh Tilapia with Plantain" data-price="20.00">Grilled Fresh Tilapia with Plantain ($20.00)</option>
+                <option value="Asun Rice" data-price="15.00">Asun Rice ($15.00)</option>
+                <option value="Cow Feet (Leg)" data-price="5.00">Cow Feet (Leg) ($5.00)</option>
+                <option value="Yam Porridge" data-price="14.00">Yam Porridge ($14.00)</option>
+                <option value="Ewa Agunyin (Beans)" data-price="13.00">Ewa Agunyin (Beans) ($13.00)</option>
+                <option value="Chicken in Stew" data-price="6.00">Chicken in Stew ($6.00)</option>
+                <option value="Cat Fish Alata DRY FISH" data-price="12.00">Cat Fish Alata DRY FISH ($12.00)</option>
+                <option value="White Rice" data-price="15.00">White Rice ($15.00)</option>
+                <option value="Ayamasi Stew" data-price="5.00">Ayamasi Stew ($5.00)</option>
+                <option value="DB LAMB" data-price="10.00">DB LAMB ($10.00)</option>
+                <option value="Ponmo" data-price="5.00">Ponmo ($5.00)</option>
+                <option value="Naija Whitting" data-price="5.00">Naija Whitting ($5.00)</option>
+                <option value="Shaki" data-price="3.00">Shaki ($3.00)</option>
+                <option value="Dodo (Yellow Plantain)" data-price="3.00">Dodo (Yellow Plantain) ($3.00)</option>
+                <option value="Stock Fish Rice (Palm Oil Rice)" data-price="15.00">Stock Fish Rice (Palm Oil Rice) ($15.00)</option>
+                <option value="Jasmine Rice/White Rice" data-price="13.00">Jasmine Rice/White Rice ($13.00)</option>
+                <option value="Whiting Fish" data-price="6.00">Whiting Fish ($6.00)</option>
+                <option value="Kondre Plantin / Plantain and Goat Meat Pepper Soup" data-price="18.00">Kondre Plantin / Plantain and Goat Meat Pepper Soup ($18.00)</option>
+                <option value="Suya and Vegetables" data-price="12.00">Suya and Vegetables ($12.00)</option>
+                <option value="FRESH FISH RED SNAPPER" data-price="18.00">FRESH FISH RED SNAPPER ($18.00)</option>
+                <option value="Cassava Flour (Garri)" data-price="3.00">Cassava Flour (Garri) ($3.00)</option>
+                <option value="Tuwo Gbegri and Ewedu with Complete Meat" data-price="13.00">Tuwo Gbegri and Ewedu with Complete Meat ($13.00)</option>
+                <option value="Poulet DG" data-price="18.00">Poulet DG ($18.00)</option>
+                <option value="FRESH CAT FISH" data-price="15.00">FRESH CAT FISH ($15.00)</option>
+                <option value="FRESH BLUE FISH" data-price="20.00">FRESH BLUE FISH ($20.00)</option>
+                <option value="FRESH MACKEREL FISH" data-price="20.00">FRESH MACKEREL FISH ($20.00)</option>
+                <option value="FRESH FISH FLOUNDER" data-price="20.00">FRESH FISH FLOUNDER ($20.00)</option>
+                <option value="SS Express Special Fried Rice" data-price="18.00">SS Express Special Fried Rice ($18.00)</option>
+                <option value="Pan Fry Honey Shrimps with Hot Garlic" data-price="15.00">Pan Fry Honey Shrimps with Hot Garlic ($15.00)</option>
+                <option value="Italian Honey BBQ Chicken Wings" data-price="15.00">Italian Honey BBQ Chicken Wings ($15.00)</option>
+                <option value="SS Express Seafood Vermicelli Noodles" data-price="18.00">SS Express Seafood Vermicelli Noodles ($18.00)</option>
+                <option value="SS Express Soy Sauce Steamed Vermicelli with Crabs" data-price="15.00">SS Express Soy Sauce Steamed Vermicelli with Crabs ($15.00)</option>
+                <option value="SS Express Chinese Small Chops Package" data-price="20.00">SS Express Chinese Small Chops Package ($20.00)</option>
+                <option value="Assorted Vegetables" data-price="15.00">Assorted Vegetables ($15.00)</option>
+                <option value="SS Express Biang Biang Noodles Saucy Beef with Assorted Vegetables" data-price="20.00">SS Express Biang Biang Noodles Saucy Beef with Assorted Vegetables ($20.00)</option>
+                <option value="Asian Crispy Mushroom in Pepper Salt" data-price="15.00">Asian Crispy Mushroom in Pepper Salt ($15.00)</option>
+                <option value="SS Express Pak Choi with Chinese Black Mushroom & Vegetarian Fried Rice" data-price="25.00">SS Express Pak Choi with Chinese Black Mushroom & Vegetarian Fried Rice ($25.00)</option>
+                <option value="Indian Garlic Naan" data-price="10.00">Indian Garlic Naan ($10.00)</option>
+                <option value="Fried Rice with Chicken" data-price="15.00">Fried Rice with Chicken ($15.00)</option>
+                <option value="Special Fried Rice" data-price="15.00">Special Fried Rice ($15.00)</option>
+                <option value="Mixed Meat Soy Sauce Fried Rice" data-price="15.00">Mixed Meat Soy Sauce Fried Rice ($15.00)</option>
+                <option value="Fried Rice with Shrimps" data-price="15.00">Fried Rice with Shrimps ($15.00)</option>
+                <option value="Fried Rice with Beef" data-price="15.00">Fried Rice with Beef ($15.00)</option>
+                <option value="White Steamed Rice" data-price="8.00">White Steamed Rice ($8.00)</option>
+                <option value="Egg Fried Rice" data-price="14.00">Egg Fried Rice ($14.00)</option>
+                <option value="Vegetarian Fried Rice" data-price="13.00">Vegetarian Fried Rice ($13.00)</option>
+                <option value="Stir-Prawns on Hot Plate" data-price="15.00">Stir-Prawns on Hot Plate ($15.00)</option>
+                <option value="Prawns in Sweet and Sour Sauce" data-price="15.00">Prawns in Sweet and Sour Sauce ($15.00)</option>
+                <option value="Stir-Prawns Black Bean Sauce on Hot Plate" data-price="17.00">Stir-Prawns Black Bean Sauce on Hot Plate ($17.00)</option>
+                <option value="Stir-Fry Prawns in Chili Sauce" data-price="15.00">Stir-Fry Prawns in Chili Sauce ($15.00)</option>
+                <option value="Steamed Prawns with Vermicelli Noodles" data-price="15.00">Steamed Prawns with Vermicelli Noodles ($15.00)</option>
+                <option value="Fried Prawns in Pepper Salt (1 Pc)" data-price="15.00">Fried Prawns in Pepper Salt (1 Pc) ($15.00)</option>
+                <option value="Fish with Assorted Vegetables" data-price="15.00">Fish with Assorted Vegetables ($15.00)</option>
+                <option value="Fish Fillet in Oyster Sauce on Hot Plate" data-price="15.00">Fish Fillet in Oyster Sauce on Hot Plate ($15.00)</option>
+                <option value="Fish Fillet in Black Bean Sauce" data-price="17.00">Fish Fillet in Black Bean Sauce ($17.00)</option>
+                <option value="Fish Fillet in Chili Sauce" data-price="15.00">Fish Fillet in Chili Sauce ($15.00)</option>
+                <option value="Fish Fillet in Sweet and Sour Sauce" data-price="15.00">Fish Fillet in Sweet and Sour Sauce ($15.00)</option>
+                <option value="Fried Shrimps in Chili Sauce" data-price="15.00">Fried Shrimps in Chili Sauce ($15.00)</option>
+                <option value="Fried Shrimps with Assorted Vegetables" data-price="18.00">Fried Shrimps with Assorted Vegetables ($18.00)</option>
+                <option value="Pan Fry Shrimps with Hot Garlic" data-price="15.00">Pan Fry Shrimps with Hot Garlic ($15.00)</option>
+                <option value="Fried Shrimps in Black Bean Sauce" data-price="15.00">Fried Shrimps in Black Bean Sauce ($15.00)</option>
+                <option value="Fried Shrimps in Sweet and Sour Sauce" data-price="20.00">Fried Shrimps in Sweet and Sour Sauce ($20.00)</option>
+                <option value="Stir Fry Shrimps in Tomato Sauce" data-price="15.00">Stir Fry Shrimps in Tomato Sauce ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Mixed Meat" data-price="18.00">Fried Chow Mein Noodles with Mixed Meat ($18.00)</option>
+                <option value="Fried Chow Mein Noodles with Beef" data-price="15.00">Fried Chow Mein Noodles with Beef ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Chicken" data-price="15.00">Fried Chow Mein Noodles with Chicken ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Shrimps" data-price="15.00">Fried Chow Mein Noodles with Shrimps ($15.00)</option>
+                <option value="Fried Chow Mein Vegetarian Noodles" data-price="15.00">Fried Chow Mein Vegetarian Noodles ($15.00)</option>
+                <option value="Fried Vermicelli Special in Singapore Style" data-price="18.00">Fried Vermicelli Special in Singapore Style ($18.00)</option>
+                <option value="Fried Vermicelli Shrimps in Singapore Style" data-price="15.00">Fried Vermicelli Shrimps in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Beef in Singapore Style" data-price="15.00">Fried Vermicelli Beef in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Egg Noodles" data-price="15.00">Fried Vermicelli Egg Noodles ($15.00)</option>
+                <option value="Fried Vermicelli Chicken in Singapore Style" data-price="15.00">Fried Vermicelli Chicken in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Vegetarian Noodles" data-price="15.00">Fried Vermicelli Vegetarian Noodles ($15.00)</option>
+                <option value="Diced Chicken in Black Bean Sauce on Hot Plate" data-price="15.00">Diced Chicken in Black Bean Sauce on Hot Plate ($15.00)</option>
+                <option value="Diced Chicken in Curry Sauce" data-price="15.00">Diced Chicken in Curry Sauce ($15.00)</option>
+                <option value="Diced Chicken with Assorted Vegetable" data-price="18.00">Diced Chicken with Assorted Vegetable ($18.00)</option>
+                <option value="Diced Chicken in Sweet Chili Sauce" data-price="15.00">Diced Chicken in Sweet Chili Sauce ($15.00)</option>
+                <option value="Diced Chicken in Chili Sauce" data-price="15.00">Diced Chicken in Chili Sauce ($15.00)</option>
+                <option value="Diced Chicken with Ginger and Spring Onion on Hot Plate" data-price="15.00">Diced Chicken with Ginger and Spring Onion on Hot Plate ($15.00)</option>
+                <option value="Diced Chicken in Black Pepper Sauce" data-price="15.00">Diced Chicken in Black Pepper Sauce ($15.00)</option>
+                <option value="Diced Chicken in Sweet and Sour Sauce" data-price="18.00">Diced Chicken in Sweet and Sour Sauce ($18.00)</option>
+                <option value="Shredded Beef with Green Pepper" data-price="15.00">Shredded Beef with Green Pepper ($15.00)</option>
+                <option value="Sliced Beef with Assorted Vegetable" data-price="15.00">Sliced Beef with Assorted Vegetable ($15.00)</option>
+                <option value="Sliced Beef with Stewed Sauce" data-price="15.00">Sliced Beef with Stewed Sauce ($15.00)</option>
+                <option value="Sliced Beef in Curry Sauce" data-price="15.00">Sliced Beef in Curry Sauce ($15.00)</option>
+                <option value="Sliced Beef with Chili Sauce" data-price="15.00">Sliced Beef with Chili Sauce ($15.00)</option>
+                <option value="De Zeal Stick Beef" data-price="18.00">De Zeal Stick Beef ($18.00)</option>
+                <option value="Sliced Beef in Szechuan Sauce" data-price="20.00">Sliced Beef in Szechuan Sauce ($20.00)</option>
+                <option value="Shanghai Shredded Beef with Green Pepper Sauce" data-price="15.00">Shanghai Shredded Beef with Green Pepper Sauce ($15.00)</option>
+                <option value="Sliced Beef in Black Bean Sauce" data-price="18.00">Sliced Beef in Black Bean Sauce ($18.00)</option>
+                <option value="Sliced Beef with Ginger and Spring Onion on Hot Plate" data-price="15.00">Sliced Beef with Ginger and Spring Onion on Hot Plate ($15.00)</option>
+                <option value="Cream of Seafood (Creamy)" data-price="18.00">Cream of Seafood (Creamy) ($18.00)</option>
+                <option value="Asian Chicken Mushroom Soup" data-price="15.00">Asian Chicken Mushroom Soup ($15.00)</option>
+                <option value="Minced Beef and Egg Soup" data-price="15.00">Minced Beef and Egg Soup ($15.00)</option>
+                <option value="Chicken with Sweet Corn Soup" data-price="15.00">Chicken with Sweet Corn Soup ($15.00)</option>
+                <option value="Hot and Sour Peking Soup" data-price="15.00">Hot and Sour Peking Soup ($15.00)</option>
+                <option value="Chow Mein Chicken Soup Noodles" data-price="15.00">Chow Mein Chicken Soup Noodles ($15.00)</option>
+                <option value="Chow Mein Beef Soup Noodles" data-price="12.00">Chow Mein Beef Soup Noodles ($12.00)</option>
+                <option value="Vegetarian Egg Soup" data-price="10.00">Vegetarian Egg Soup ($10.00)</option>
+                <option value="Deep Fried Chicken Spring Rolls" data-price="15.00">Deep Fried Chicken Spring Rolls ($15.00)</option>
+                <option value="Deep Fried Vegetarian Spring Rolls" data-price="15.00">Deep Fried Vegetarian Spring Rolls ($15.00)</option>
+                <option value="Deep Fried Prawns & Mayonnaise Spring Rolls" data-price="15.00">Deep Fried Prawns & Mayonnaise Spring Rolls ($15.00)</option>
+                <option value="Samosa" data-price="15.00">Samosa ($15.00)</option>
+                        <!-- Add more meals as needed --><br>
+                    </select>
+                    <select name="selectedMeals[]" onchange="calculateOrderSummary()">
+                        <option value="" selected disabled>Choose a meal</option>
+                        <option value="Yam and Egg" data-price="13.00">Yam and Egg ($13.00)</option>
+                <option value="Cow Feet (Leg)" data-price="5.00">Cow Feet (Leg) ($5.00)</option>
+                <option value="Fry Instant Indomie Noodles with Suya" data-price="18.00">Fry Instant Indomie Noodles with Suya. ($18.00)</option>
+                <option value="Plantain and Egg" data-price="10.00">Plantain and Egg ($10.00)</option>
+                <option value="Guinea Corn Meal(Ogi Baba)" data-price="10.00">Guinea Corn Meal(Ogi Baba) ($10.00)</option>
+                <option value="Pap White (Ogi)" data-price="10.00">Pap White (Ogi) ($10.00)</option>
+                <option value="Custard + Moi Moi or Akara" data-price="10.00">Custard + Moi Moi or Akara ($10.00)</option>
+                <option value="Pap Yellow (Ogi)" data-price="10.00">Pap Yellow (Ogi) ($10.00)</option>
+                <option value="SS Grill Chicken Sandwich" data-price="13.00">SS Grill Chicken Sandwich ($13.00)</option>
+                <option value="Oatmeal Meal with Akara or Moimoi" data-price="10.00">Oatmeal Meal with Akara or Moimoi ($10.00)</option>
+                <option value="Oatmeal Nut with Bread plus boiled Egg" data-price="14.00">Oatmeal Nut with Bread plus boiled Egg ($14.00)</option>
+                <option value="SS Sandwich Avocado Plus Egg" data-price="13.00">SS Sandwich Avocado Plus Egg ($13.00)</option>
+                <option value="India Nan Bread" data-price="10.00">India Nan Bread ($10.00)</option>
+                <option value="Avocado Salad" data-price="13.00">Avocado Salad ($13.00)</option>
+                <option value="SS Vegetable Salad Meal" data-price="13.00">SS Vegetable Salad Meal ($13.00)</option>
+                <option value="SS Chicken Salad Meal" data-price="13.00">SS Chicken Salad Meal ($13.00)</option>
+                <option value="Oat Meal Chicken Salad" data-price="13.00">Oat Meal Chicken Salad ($13.00)</option>
+                <option value="Egusi Soup" data-price="13.00">Egusi Soup ($13.00)</option>
+                <option value="Rich Jollof Rice" data-price="14.00">Rich Jollof Rice ($14.00)</option>
+                <option value="Suya and Jollof Rice" data-price="18.00">Suya and Jollof Rice ($18.00)</option>
+                <option value="Efo Riro (Vegetable)" data-price="13.00">Efo Riro (Vegetable) ($13.00)</option>
+                <option value="Seafood Okro" data-price="15.00">Seafood Okro ($15.00)</option>
+                <option value="Pepper Soup" data-price="20.00">Pepper Soup ($20.00)</option>
+                <option value="Edika Ikong Soup" data-price="15.00">Edika Ikong Soup ($15.00)</option>
+                <option value="Amala Marietta (Gbegri, Ewedu with Meat)" data-price="15.00">Amala Marietta (Gbegri, Ewedu with Meat) ($15.00)</option>
+                <option value="Ayamasi Stew with Rice" data-price="13.00">Ayamasi Stew with Rice ($13.00)</option>
+                <option value="Turkey Wings-Midi" data-price="5.00">Turkey Wings-Midi ($5.00)</option>
+                <option value="Instant Indomie Noodles with Fry Egg or Boil Egg" data-price="14.00">Instant Indomie Noodles with Fry Egg or Boil Egg ($14.00)</option>
+                <option value="Poundo Yam" data-price="3.00">Poundo Yam ($3.00)</option>
+                <option value="Croaker Fish" data-price="10.00">Croaker Fish ($10.00)</option>
+                <option value="Grilled Fresh Tilapia with Plantain" data-price="20.00">Grilled Fresh Tilapia with Plantain ($20.00)</option>
+                <option value="Asun Rice" data-price="15.00">Asun Rice ($15.00)</option>
+                <option value="Cow Feet (Leg)" data-price="5.00">Cow Feet (Leg) ($5.00)</option>
+                <option value="Yam Porridge" data-price="14.00">Yam Porridge ($14.00)</option>
+                <option value="Ewa Agunyin (Beans)" data-price="13.00">Ewa Agunyin (Beans) ($13.00)</option>
+                <option value="Chicken in Stew" data-price="6.00">Chicken in Stew ($6.00)</option>
+                <option value="Cat Fish Alata DRY FISH" data-price="12.00">Cat Fish Alata DRY FISH ($12.00)</option>
+                <option value="White Rice" data-price="15.00">White Rice ($15.00)</option>
+                <option value="Ayamasi Stew" data-price="5.00">Ayamasi Stew ($5.00)</option>
+                <option value="DB LAMB" data-price="10.00">DB LAMB ($10.00)</option>
+                <option value="Ponmo" data-price="5.00">Ponmo ($5.00)</option>
+                <option value="Naija Whitting" data-price="5.00">Naija Whitting ($5.00)</option>
+                <option value="Shaki" data-price="3.00">Shaki ($3.00)</option>
+                <option value="Dodo (Yellow Plantain)" data-price="3.00">Dodo (Yellow Plantain) ($3.00)</option>
+                <option value="Stock Fish Rice (Palm Oil Rice)" data-price="15.00">Stock Fish Rice (Palm Oil Rice) ($15.00)</option>
+                <option value="Jasmine Rice/White Rice" data-price="13.00">Jasmine Rice/White Rice ($13.00)</option>
+                <option value="Whiting Fish" data-price="6.00">Whiting Fish ($6.00)</option>
+                <option value="Kondre Plantin / Plantain and Goat Meat Pepper Soup" data-price="18.00">Kondre Plantin / Plantain and Goat Meat Pepper Soup ($18.00)</option>
+                <option value="Suya and Vegetables" data-price="12.00">Suya and Vegetables ($12.00)</option>
+                <option value="FRESH FISH RED SNAPPER" data-price="18.00">FRESH FISH RED SNAPPER ($18.00)</option>
+                <option value="Cassava Flour (Garri)" data-price="3.00">Cassava Flour (Garri) ($3.00)</option>
+                <option value="Tuwo Gbegri and Ewedu with Complete Meat" data-price="13.00">Tuwo Gbegri and Ewedu with Complete Meat ($13.00)</option>
+                <option value="Poulet DG" data-price="18.00">Poulet DG ($18.00)</option>
+                <option value="FRESH CAT FISH" data-price="15.00">FRESH CAT FISH ($15.00)</option>
+                <option value="FRESH BLUE FISH" data-price="20.00">FRESH BLUE FISH ($20.00)</option>
+                <option value="FRESH MACKEREL FISH" data-price="20.00">FRESH MACKEREL FISH ($20.00)</option>
+                <option value="FRESH FISH FLOUNDER" data-price="20.00">FRESH FISH FLOUNDER ($20.00)</option>
+                <option value="SS Express Special Fried Rice" data-price="18.00">SS Express Special Fried Rice ($18.00)</option>
+                <option value="Pan Fry Honey Shrimps with Hot Garlic" data-price="15.00">Pan Fry Honey Shrimps with Hot Garlic ($15.00)</option>
+                <option value="Italian Honey BBQ Chicken Wings" data-price="15.00">Italian Honey BBQ Chicken Wings ($15.00)</option>
+                <option value="SS Express Seafood Vermicelli Noodles" data-price="18.00">SS Express Seafood Vermicelli Noodles ($18.00)</option>
+                <option value="SS Express Soy Sauce Steamed Vermicelli with Crabs" data-price="15.00">SS Express Soy Sauce Steamed Vermicelli with Crabs ($15.00)</option>
+                <option value="SS Express Chinese Small Chops Package" data-price="20.00">SS Express Chinese Small Chops Package ($20.00)</option>
+                <option value="Assorted Vegetables" data-price="15.00">Assorted Vegetables ($15.00)</option>
+                <option value="SS Express Biang Biang Noodles Saucy Beef with Assorted Vegetables" data-price="20.00">SS Express Biang Biang Noodles Saucy Beef with Assorted Vegetables ($20.00)</option>
+                <option value="Asian Crispy Mushroom in Pepper Salt" data-price="15.00">Asian Crispy Mushroom in Pepper Salt ($15.00)</option>
+                <option value="SS Express Pak Choi with Chinese Black Mushroom & Vegetarian Fried Rice" data-price="25.00">SS Express Pak Choi with Chinese Black Mushroom & Vegetarian Fried Rice ($25.00)</option>
+                <option value="Indian Garlic Naan" data-price="10.00">Indian Garlic Naan ($10.00)</option>
+                <option value="Fried Rice with Chicken" data-price="15.00">Fried Rice with Chicken ($15.00)</option>
+                <option value="Special Fried Rice" data-price="15.00">Special Fried Rice ($15.00)</option>
+                <option value="Mixed Meat Soy Sauce Fried Rice" data-price="15.00">Mixed Meat Soy Sauce Fried Rice ($15.00)</option>
+                <option value="Fried Rice with Shrimps" data-price="15.00">Fried Rice with Shrimps ($15.00)</option>
+                <option value="Fried Rice with Beef" data-price="15.00">Fried Rice with Beef ($15.00)</option>
+                <option value="White Steamed Rice" data-price="8.00">White Steamed Rice ($8.00)</option>
+                <option value="Egg Fried Rice" data-price="14.00">Egg Fried Rice ($14.00)</option>
+                <option value="Vegetarian Fried Rice" data-price="13.00">Vegetarian Fried Rice ($13.00)</option>
+                <option value="Stir-Prawns on Hot Plate" data-price="15.00">Stir-Prawns on Hot Plate ($15.00)</option>
+                <option value="Prawns in Sweet and Sour Sauce" data-price="15.00">Prawns in Sweet and Sour Sauce ($15.00)</option>
+                <option value="Stir-Prawns Black Bean Sauce on Hot Plate" data-price="17.00">Stir-Prawns Black Bean Sauce on Hot Plate ($17.00)</option>
+                <option value="Stir-Fry Prawns in Chili Sauce" data-price="15.00">Stir-Fry Prawns in Chili Sauce ($15.00)</option>
+                <option value="Steamed Prawns with Vermicelli Noodles" data-price="15.00">Steamed Prawns with Vermicelli Noodles ($15.00)</option>
+                <option value="Fried Prawns in Pepper Salt (1 Pc)" data-price="15.00">Fried Prawns in Pepper Salt (1 Pc) ($15.00)</option>
+                <option value="Fish with Assorted Vegetables" data-price="15.00">Fish with Assorted Vegetables ($15.00)</option>
+                <option value="Fish Fillet in Oyster Sauce on Hot Plate" data-price="15.00">Fish Fillet in Oyster Sauce on Hot Plate ($15.00)</option>
+                <option value="Fish Fillet in Black Bean Sauce" data-price="17.00">Fish Fillet in Black Bean Sauce ($17.00)</option>
+                <option value="Fish Fillet in Chili Sauce" data-price="15.00">Fish Fillet in Chili Sauce ($15.00)</option>
+                <option value="Fish Fillet in Sweet and Sour Sauce" data-price="15.00">Fish Fillet in Sweet and Sour Sauce ($15.00)</option>
+                <option value="Fried Shrimps in Chili Sauce" data-price="15.00">Fried Shrimps in Chili Sauce ($15.00)</option>
+                <option value="Fried Shrimps with Assorted Vegetables" data-price="18.00">Fried Shrimps with Assorted Vegetables ($18.00)</option>
+                <option value="Pan Fry Shrimps with Hot Garlic" data-price="15.00">Pan Fry Shrimps with Hot Garlic ($15.00)</option>
+                <option value="Fried Shrimps in Black Bean Sauce" data-price="15.00">Fried Shrimps in Black Bean Sauce ($15.00)</option>
+                <option value="Fried Shrimps in Sweet and Sour Sauce" data-price="20.00">Fried Shrimps in Sweet and Sour Sauce ($20.00)</option>
+                <option value="Stir Fry Shrimps in Tomato Sauce" data-price="15.00">Stir Fry Shrimps in Tomato Sauce ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Mixed Meat" data-price="18.00">Fried Chow Mein Noodles with Mixed Meat ($18.00)</option>
+                <option value="Fried Chow Mein Noodles with Beef" data-price="15.00">Fried Chow Mein Noodles with Beef ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Chicken" data-price="15.00">Fried Chow Mein Noodles with Chicken ($15.00)</option>
+                <option value="Fried Chow Mein Noodles with Shrimps" data-price="15.00">Fried Chow Mein Noodles with Shrimps ($15.00)</option>
+                <option value="Fried Chow Mein Vegetarian Noodles" data-price="15.00">Fried Chow Mein Vegetarian Noodles ($15.00)</option>
+                <option value="Fried Vermicelli Special in Singapore Style" data-price="18.00">Fried Vermicelli Special in Singapore Style ($18.00)</option>
+                <option value="Fried Vermicelli Shrimps in Singapore Style" data-price="15.00">Fried Vermicelli Shrimps in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Beef in Singapore Style" data-price="15.00">Fried Vermicelli Beef in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Egg Noodles" data-price="15.00">Fried Vermicelli Egg Noodles ($15.00)</option>
+                <option value="Fried Vermicelli Chicken in Singapore Style" data-price="15.00">Fried Vermicelli Chicken in Singapore Style ($15.00)</option>
+                <option value="Fried Vermicelli Vegetarian Noodles" data-price="15.00">Fried Vermicelli Vegetarian Noodles ($15.00)</option>
+                <option value="Diced Chicken in Black Bean Sauce on Hot Plate" data-price="15.00">Diced Chicken in Black Bean Sauce on Hot Plate ($15.00)</option>
+                <option value="Diced Chicken in Curry Sauce" data-price="15.00">Diced Chicken in Curry Sauce ($15.00)</option>
+                <option value="Diced Chicken with Assorted Vegetable" data-price="18.00">Diced Chicken with Assorted Vegetable ($18.00)</option>
+                <option value="Diced Chicken in Sweet Chili Sauce" data-price="15.00">Diced Chicken in Sweet Chili Sauce ($15.00)</option>
+                <option value="Diced Chicken in Chili Sauce" data-price="15.00">Diced Chicken in Chili Sauce ($15.00)</option>
+                <option value="Diced Chicken with Ginger and Spring Onion on Hot Plate" data-price="15.00">Diced Chicken with Ginger and Spring Onion on Hot Plate ($15.00)</option>
+                <option value="Diced Chicken in Black Pepper Sauce" data-price="15.00">Diced Chicken in Black Pepper Sauce ($15.00)</option>
+                <option value="Diced Chicken in Sweet and Sour Sauce" data-price="18.00">Diced Chicken in Sweet and Sour Sauce ($18.00)</option>
+                <option value="Shredded Beef with Green Pepper" data-price="15.00">Shredded Beef with Green Pepper ($15.00)</option>
+                <option value="Sliced Beef with Assorted Vegetable" data-price="15.00">Sliced Beef with Assorted Vegetable ($15.00)</option>
+                <option value="Sliced Beef with Stewed Sauce" data-price="15.00">Sliced Beef with Stewed Sauce ($15.00)</option>
+                <option value="Sliced Beef in Curry Sauce" data-price="15.00">Sliced Beef in Curry Sauce ($15.00)</option>
+                <option value="Sliced Beef with Chili Sauce" data-price="15.00">Sliced Beef with Chili Sauce ($15.00)</option>
+                <option value="De Zeal Stick Beef" data-price="18.00">De Zeal Stick Beef ($18.00)</option>
+                <option value="Sliced Beef in Szechuan Sauce" data-price="20.00">Sliced Beef in Szechuan Sauce ($20.00)</option>
+                <option value="Shanghai Shredded Beef with Green Pepper Sauce" data-price="15.00">Shanghai Shredded Beef with Green Pepper Sauce ($15.00)</option>
+                <option value="Sliced Beef in Black Bean Sauce" data-price="18.00">Sliced Beef in Black Bean Sauce ($18.00)</option>
+                <option value="Sliced Beef with Ginger and Spring Onion on Hot Plate" data-price="15.00">Sliced Beef with Ginger and Spring Onion on Hot Plate ($15.00)</option>
+                <option value="Cream of Seafood (Creamy)" data-price="18.00">Cream of Seafood (Creamy) ($18.00)</option>
+                <option value="Asian Chicken Mushroom Soup" data-price="15.00">Asian Chicken Mushroom Soup ($15.00)</option>
+                <option value="Minced Beef and Egg Soup" data-price="15.00">Minced Beef and Egg Soup ($15.00)</option>
+                <option value="Chicken with Sweet Corn Soup" data-price="15.00">Chicken with Sweet Corn Soup ($15.00)</option>
+                <option value="Hot and Sour Peking Soup" data-price="15.00">Hot and Sour Peking Soup ($15.00)</option>
+                <option value="Chow Mein Chicken Soup Noodles" data-price="15.00">Chow Mein Chicken Soup Noodles ($15.00)</option>
+                <option value="Chow Mein Beef Soup Noodles" data-price="12.00">Chow Mein Beef Soup Noodles ($12.00)</option>
+                <option value="Vegetarian Egg Soup" data-price="10.00">Vegetarian Egg Soup ($10.00)</option>
+                <option value="Deep Fried Chicken Spring Rolls" data-price="15.00">Deep Fried Chicken Spring Rolls ($15.00)</option>
+                <option value="Deep Fried Vegetarian Spring Rolls" data-price="15.00">Deep Fried Vegetarian Spring Rolls ($15.00)</option>
+                <option value="Deep Fried Prawns & Mayonnaise Spring Rolls" data-price="15.00">Deep Fried Prawns & Mayonnaise Spring Rolls ($15.00)</option>
+                <option value="Samosa" data-price="15.00">Samosa ($15.00)</option>
+                        <!-- Add more meals as needed -->
+                    </select>
+                </div>
+
+                <label for="mealDate">Select Date:</label>
+                <input type="date" name="selectedDates[]" required>
+
+                <button type="button" onclick="removeMealRow(this)">Remove Day</button>
+            `;
+
+            mealRows.appendChild(mealRow);
+            calculateOrderSummary();
+        }
+
+        function removeMealRow(button) {
+            var mealRow = button.parentNode;
+            mealRow.parentNode.removeChild(mealRow);
+            calculateOrderSummary();
+        }
+
+        function calculateOrderSummary() {
+            var selectedDropdowns = document.querySelectorAll('select[name="selectedMeals[]"]');
+            var totalPrice = 0;
+
+            selectedDropdowns.forEach(function (selectElement) {
+                var selectedOption = selectElement.options[selectElement.selectedIndex];
+                totalPrice += parseFloat(selectedOption.getAttribute('data-price')) || 0;
+            });
+
+            var taxRate = 0.09; // 9%
+            var taxAmount = totalPrice * taxRate;
+            var grandTotal = totalPrice + taxAmount;
+
+            document.getElementById('totalPrice').textContent = '$' + totalPrice.toFixed(2);
+            document.getElementById('taxAmount').textContent = '$' + taxAmount.toFixed(2);
+            document.getElementById('grandTotal').textContent = '$' + grandTotal.toFixed(2);
+        }
+    </script>
+</div>
